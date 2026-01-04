@@ -731,7 +731,7 @@
      * 2) Paste the deployment URL below
      **************************************************************************/
     const SUBMIT_MODE = "webhook"; // "webhook" | "disabled"
-    const WEBHOOK_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxsVr3S4jBGfAlObQoDRAiVm1Zp7uGwX-a-3aSlKFGCOJimqguWJQ_nmQdYezbddCLp/exec";
 
     /**************************************************************************
      * LOCAL DRAFT (optional - for instant resume while offline)
@@ -914,7 +914,7 @@
      **************************************************************************/
     async function postToSheets(mode){
       if(SUBMIT_MODE !== "webhook") return { ok:false, error:"Submit mode disabled" };
-      if(!WEBHOOK_URL || WEBHOOK_URL.includes("PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE")){
+      if(!WEBHOOK_URL || WEBHOOK_URL.includes("https://script.google.com/macros/s/AKfycbxsVr3S4jBGfAlObQoDRAiVm1Zp7uGwX-a-3aSlKFGCOJimqguWJQ_nmQdYezbddCLp/exec")){
         throw new Error("Webhook not configured. Paste your Apps Script Web App URL.");
       }
 
