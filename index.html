@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Launch Form</title>
+  <meta name="description" content="Launch form for contractor go-live setup and Google visibility." />
+
+  <!-- Better font (free + fast) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      /* Agency-clean base + subtle modern polish */
+      --bg: #f4f6fb;
+      --card: rgba(255,255,255,.86);
+      --text: #0b1220;
+      --muted: #5b6476;
+      --line: rgba(15, 23, 42, .12);
+      --line2: rgba(15, 23, 42, .18);
+      --accent: #1f4dff;
+      --accent2: #00c2ff;
+      --focus: rgba(31, 77, 255, .16);
+      --shadow: 0 10px 30px rgba(15, 23, 42, .10);
+      --shadowSoft: 0 1px 2px rgba(15, 23, 42, .06);
+      --radius: 14px;
+      --radius2: 12px;
+      --sans: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      line-height: 1.45;
+
+      /*
+        Background psychology:
+        - Calm, capable, professional.
+        - Slightly textured depth to signal "agency" without techy neon.
+        - Soft gradients + faint grid to feel structured and organized.
+      */
+      background:
+        radial-gradient(900px 560px at 18% 6%, rgba(31,77,255,.12), transparent 62%),
+        radial-gradient(860px 520px at 86% 10%, rgba(0,194,255,.10), transparent 65%),
+        radial-gradient(700px 520px at 55% 96%, rgba(111, 66, 193, .08), transparent 60%),
+        linear-gradient(180deg, #f7f9ff 0%, #f4f6fb 45%, #f3f5fb 100%);
+      overflow-x:hidden;
+    }
+
+    /* Subtle grid texture (very light, not distracting) */
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(to right, rgba(15,23,42,.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15,23,42,.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at 40% 10%, rgba(0,0,0,.8), transparent 65%);
+      opacity: .7;
+    }
+
+    a{ color: inherit; text-decoration: none; border-bottom: 1px solid rgba(31,77,255,.25); }
+    a:hover{ border-bottom-color: rgba(31,77,255,.55); }
+
+    .wrap{
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 44px 18px 80px;
+      position: relative;
+    }
+
+    /* Top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadowSoft);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 260px;
+    }
+
+    .mark{
+      width: 12px; height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      box-shadow:
+        0 0 0 6px rgba(31,77,255,.06),
+        0 10px 30px rgba(31,77,255,.10);
+      flex-shrink:0;
+    }
+
+    .brand .name{
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      font-size: 14px;
+    }
+    .brand .sub{
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-left: 10px;
+      padding-left: 10px;
+      border-left: 1px solid rgba(15,23,42,.14);
+      white-space: nowrap;
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .status{
+      font-size: 12.5px;
+      color: var(--muted);
+      font-family: var(--mono);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,.14);
+      background: rgba(255,255,255,.55);
+      white-space: nowrap;
+    }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(15,23,42,.18);
+      background: rgba(255,255,255,.72);
+      color: var(--text);
+      padding: 9px 12px;
+      font-size: 13.5px;
+      border-radius: 999px;
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      box-shadow: 0 1px 2px rgba(15,23,42,.05);
+      white-space: nowrap;
+      font-weight: 600;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,.92);
+      border-color: rgba(15,23,42,.24);
+      transform: translateY(-1px);
+    }
+    .btn:active{ transform: translateY(0px); }
+    .btn.primary{
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 12px 24px rgba(31,77,255,.18);
+    }
+    .btn.primary:hover{
+      box-shadow: 0 14px 28px rgba(31,77,255,.22);
+    }
+
+    /* Header */
+    header{
+      margin-top: 18px;
+      padding: 24px 22px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.76));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header:before{
+      content:"";
+      position:absolute;
+      inset: -140px -160px auto auto;
+      width: 360px; height: 360px;
+      background: radial-gradient(circle at 35% 35%, rgba(31,77,255,.16), transparent 64%);
+      filter: blur(2px);
+      opacity: .9;
+      pointer-events:none;
+      transform: rotate(10deg);
+    }
+
+    .eyebrow{
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(91,100,118,.85);
+      margin-bottom: 10px;
+      font-family: var(--mono);
+    }
+
+    h1{
+      margin: 0 0 10px;
+      font-size: 34px;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+    }
+
+    .lead{
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 82ch;
+    }
+
+    .hint{
+      margin-top: 12px;
+      color: rgba(91,100,118,.92);
+      font-size: 13px;
+      max-width: 82ch;
+    }
+
+    /* Card */
+    .card{
+      margin-top: 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .cardTop{
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.62);
+      display:flex;
+      justify-content: space-between;
+      align-items:flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cardTop .t{
+      font-weight: 750;
+      letter-spacing: -0.02em;
+      font-size: 14px;
+    }
+    .cardTop .m{
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    form{
+      padding: 18px 16px 22px;
+    }
+
+    /* Sections */
+    .section{
+      padding: 18px 0;
+      border-top: 1px solid rgba(15,23,42,.10);
+    }
+    .section:first-child{
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .section h2{
+      margin: 0 0 6px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .section p{
+      margin: 0 0 14px;
+      font-size: 13.5px;
+      color: var(--muted);
+      max-width: 84ch;
+    }
+
+    /* Fields */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 760px){
+      .grid{ grid-template-columns: 1fr; }
+      header{ padding: 20px 18px; }
+      h1{ font-size: 30px; }
+    }
+
+    .field{
+      display:flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label{
+      font-size: 13px;
+      font-weight: 650;
+      color: rgba(11,18,32,.92);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    input[type="password"],
+    input[type="tel"],
+    select,
+    textarea{
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(15,23,42,.18);
+      background: rgba(255,255,255,.92);
+      font-size: 14px;
+      color: var(--text);
+      outline:none;
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    textarea{
+      min-height: 112px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(31,77,255,.55);
+      box-shadow: 0 0 0 4px var(--focus);
+      background: #fff;
+    }
+
+    .help{
+      font-size: 12.5px;
+      color: rgba(91,100,118,.92);
+    }
+
+    .full{ grid-column: 1 / -1; }
+
+    /* Standard radios/checkboxes (no custom tiles) */
+    .choices{
+      display:flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 2px;
+    }
+    .choice{
+      display:flex;
+      align-items:flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: rgba(11,18,32,.92);
+    }
+    .choice input{
+      margin-top: 2px;
+      accent-color: var(--accent);
+    }
+
+    /* Footer */
+    .footer{
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(15,23,42,.10);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Alerts */
+    .alert{
+      display:none;
+      margin-top: 14px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(15,23,42,.14);
+      font-size: 13.5px;
+      background: rgba(255,255,255,.75);
+    }
+    .alert.success{
+      border-color: rgba(6,95,70,.25);
+      background: rgba(6,95,70,.06);
+      color: #065f46;
+    }
+    .alert.error{
+      border-color: rgba(185,28,28,.22);
+      background: rgba(185,28,28,.06);
+      color: #991b1b;
+    }
+    .alert.warn{
+      border-color: rgba(202,138,4,.22);
+      background: rgba(202,138,4,.06);
+      color: #92400e;
+    }
+
+    .small-note{
+      margin-top: 16px;
+      font-size: 12.5px;
+      color: rgba(91,100,118,.92);
+    }
+
+    @media print{
+      body{ background:#fff; }
+      .topbar, .actions, .btn, .status { display:none !important; }
+      header, .card{ box-shadow:none !important; background:#fff !important; }
+      input, select, textarea{ background:#fff !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="mark"></div>
+        <div style="display:flex; align-items: baseline; gap: 10px; flex-wrap: wrap;">
+          <div class="name">Launch Form</div>
+          <div class="sub">Launch and Go-Live</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <span class="status" id="savedAt">Saved</span>
+        <button class="btn" type="button" id="btnExport">Export</button>
+        <button class="btn" type="button" id="btnReset">Reset</button>
+      </div>
+    </div>
+
+    <header>
+      <div class="eyebrow">Launch and Go-Live</div>
+      <h1>Answer what you can.</h1>
+      <p class="lead">
+        This form provides everything needed to launch and make sure leads go to the right place. We’ll also tighten up your
+        Google visibility (Business Profile, reviews, and listings).
+      </p>
+      <p class="hint">
+        Nothing is required. If you don’t know an answer, leave it blank and we’ll follow up.
+      </p>
+    </header>
+
+    <div class="card">
+      <div class="cardTop">
+        <div>
+          <div class="t">Launch Form</div>
+          <div class="m">Completion time 10-15 minutes.</div>
+        </div>
+        <div style="font-family: var(--mono); font-size: 12px; color: rgba(91,100,118,.95);">
+          Autosave is on
+        </div>
+      </div>
+
+      <form id="launchForm" novalidate>
+
+        <!-- SECTION 1: CONTACT -->
+        <div class="section">
+          <h2>Contact</h2>
+          <p>Where we should send updates and where website leads should go.</p>
+
+          <div class="grid">
+            <div class="field">
+              <label for="yourName">Your name</label>
+              <input id="yourName" name="yourName" type="text" />
+            </div>
+
+            <div class="field">
+              <label for="yourEmail">Email</label>
+              <input id="yourEmail" name="yourEmail" type="email" />
+            </div>
+
+            <div class="field">
+              <label for="yourPhone">Phone</label>
+              <input id="yourPhone" name="yourPhone" type="tel" />
+            </div>
+
+            <div class="field">
+              <label for="contactPref">Preferred communication</label>
+              <select id="contactPref" name="contactPref">
+                <option value="" selected>Select</option>
+                <option>Text</option>
+                <option>Email</option>
+                <option>Calls</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label for="leadRecipientEmails">Email(s) to receive website leads</label>
+              <input id="leadRecipientEmails" name="leadRecipientEmails" type="text" placeholder="owner@domain.com, office@domain.com" />
+              <div class="help">We will route the website contact form to these emails.</div>
+            </div>
+
+            <div class="field full">
+              <label>Do you want a text message when a lead comes in?</label>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="smsNotifications" value="Yes" /> Yes</label>
+                <label class="choice"><input type="radio" name="smsNotifications" value="No" /> No</label>
+                <label class="choice"><input type="radio" name="smsNotifications" value="" /> Not sure</label>
+              </div>
+            </div>
+
+            <div class="field full" id="smsPhoneWrap" style="display:none;">
+              <label for="smsPhoneNumber">Phone for lead texts</label>
+              <input id="smsPhoneNumber" name="smsPhoneNumber" type="tel" />
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: BUSINESS DETAILS -->
+        <div class="section">
+          <h2>Business details</h2>
+          <p>This information should match everywhere online (website and listings).</p>
+
+          <div class="grid">
+            <div class="field">
+              <label for="businessName">Business name (exact)</label>
+              <input id="businessName" name="businessName" type="text" />
+            </div>
+
+            <div class="field">
+              <label for="primaryPhone">Main phone number</label>
+              <input id="primaryPhone" name="primaryPhone" type="tel" />
+            </div>
+
+            <div class="field full">
+              <label for="businessAddress">Business address</label>
+              <textarea id="businessAddress" name="businessAddress" placeholder="Street&#10;City, State ZIP&#10;If you don’t show your address publicly, write: Service Area Only"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="businessHours">Business hours</label>
+              <input id="businessHours" name="businessHours" type="text" placeholder="Mon–Fri 8am–5pm" />
+            </div>
+
+            <div class="field">
+              <label for="serviceArea">Service area</label>
+              <input id="serviceArea" name="serviceArea" type="text" placeholder="Cities, counties, or a mile radius" />
+            </div>
+
+            <div class="field">
+              <label for="licenseNumber">License number</label>
+              <input id="licenseNumber" name="licenseNumber" type="text" />
+            </div>
+
+            <div class="field">
+              <label for="licensedStates">State(s) licensed in</label>
+              <input id="licensedStates" name="licensedStates" type="text" placeholder="Example: NC, SC" />
+            </div>
+
+            <div class="field full">
+              <label>Insurance wording for the website</label>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="insuranceStatement" value="Licensed & insured" /> Licensed & insured</label>
+                <label class="choice"><input type="radio" name="insuranceStatement" value="Licensed, bonded & insured" /> Licensed, bonded & insured</label>
+                <label class="choice"><input type="radio" name="insuranceStatement" value="Custom wording" /> Custom wording</label>
+                <label class="choice"><input type="radio" name="insuranceStatement" value="" /> Not sure</label>
+              </div>
+            </div>
+
+            <div class="field full" id="customInsuranceWrap" style="display:none;">
+              <label for="customInsuranceWording">Custom wording (exact)</label>
+              <input id="customInsuranceWording" name="customInsuranceWording" type="text" />
+            </div>
+
+            <div class="field full">
+              <label>Any old business name / phone / address we should remove from listings?</label>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="hasOldNap" value="Yes" /> Yes</label>
+                <label class="choice"><input type="radio" name="hasOldNap" value="No" /> No</label>
+                <label class="choice"><input type="radio" name="hasOldNap" value="" /> Not sure</label>
+              </div>
+            </div>
+
+            <div class="field full" id="oldNapDetailsWrap" style="display:none;">
+              <label for="oldNapDetails">Old information to remove</label>
+              <textarea id="oldNapDetails" name="oldNapDetails" placeholder="Old business name, old phone number, old address, etc."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: GODADDY ACCESS -->
+        <div class="section">
+          <h2>Domain hosting (GoDaddy)</h2>
+          <p>We use this to connect your domain and finalize launch.</p>
+
+          <div class="grid">
+            <div class="field full">
+              <label>Is your domain hosted on GoDaddy?</label>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="domainOnGoDaddy" value="Yes" /> Yes</label>
+                <label class="choice"><input type="radio" name="domainOnGoDaddy" value="No" /> No</label>
+                <label class="choice"><input type="radio" name="domainOnGoDaddy" value="Not sure" /> Not sure</label>
+              </div>
+              <div class="help">If the answer is "No", we will follow up with the correct registrar.</div>
+            </div>
+
+            <div class="field">
+              <label for="godaddyLoginEmail">GoDaddy login email</label>
+              <input id="godaddyLoginEmail" name="godaddyLoginEmail" type="email" autocomplete="username" />
+            </div>
+
+            <div class="field">
+              <label for="godaddyLoginPassword">GoDaddy password</label>
+              <input id="godaddyLoginPassword" name="godaddyLoginPassword" type="password" autocomplete="current-password" />
+              <div class="help">If you prefer, you can provide access via admin invite instead. We can coordinate by email.</div>
+            </div>
+
+            <div class="field full">
+              <label for="godaddyNotes">Notes (optional)</label>
+              <textarea id="godaddyNotes" name="godaddyNotes" placeholder="Anything helpful (2FA, account owner, domain name, etc.)"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: GBP + REVIEWS -->
+        <div class="section">
+          <h2>Google Business Profile & reviews</h2>
+          <p>This helps you show up on Google Maps and builds trust.</p>
+
+          <div class="grid">
+            <div class="field full">
+              <label>Do you have a Google Business Profile?</label>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="hasGbp" value="Yes" /> Yes</label>
+                <label class="choice"><input type="radio" name="hasGbp" value="No" /> No</label>
+                <label class="choice"><input type="radio" name="hasGbp" value="Not sure" /> Not sure</label>
+              </div>
+            </div>
+
+            <div class="field full">
+              <label for="gbpListingLink">GBP listing link (if you have it)</label>
+              <input id="gbpListingLink" name="gbpListingLink" type="url" />
+            </div>
+
+            <div class="field full">
+              <label>How should we get access to your GBP?</label>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="gbpAccessMethod" value="Add me as an admin" /> Add as admin</label>
+                <label class="choice"><input type="radio" name="gbpAccessMethod" value="I will share login/password temporarily" /> Share login temporarily</label>
+                <label class="choice"><input type="radio" name="gbpAccessMethod" value="Not applicable (I don’t have one yet)" /> Not applicable</label>
+                <label class="choice"><input type="radio" name="gbpAccessMethod" value="" /> Not sure</label>
+              </div>
+            </div>
+
+            <div class="field full" id="gbpAdminEmailWrap" style="display:none;">
+              <label for="gbpInviteEmail">If admin: email you will invite</label>
+              <input id="gbpInviteEmail" name="gbpInviteEmail" type="email" />
+            </div>
+
+            <div class="field" id="gbpLoginEmailWrap" style="display:none;">
+              <label for="gbpLoginEmail">If login: Google account email</label>
+              <input id="gbpLoginEmail" name="gbpLoginEmail" type="email" autocomplete="username" />
+            </div>
+
+            <div class="field" id="gbpLoginPasswordWrap" style="display:none;">
+              <label for="gbpLoginPassword">If login: Google account password</label>
+              <input id="gbpLoginPassword" name="gbpLoginPassword" type="password" autocomplete="current-password" />
+            </div>
+
+            <div class="field full">
+              <label for="googleReviewLink">Google review link</label>
+              <input id="googleReviewLink" name="googleReviewLink" type="url" />
+            </div>
+
+            <div class="field full">
+              <label for="otherReviewPlatforms">Other review sites</label>
+              <textarea id="otherReviewPlatforms" name="otherReviewPlatforms" placeholder="Yelp, Facebook, BBB, Angi, etc. Paste links if you have them."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: DIRECTORIES -->
+        <div class="section">
+          <h2>Directory listings (optional access)</h2>
+          <p>If you have access to any of these, we can clean them up faster.</p>
+
+          <div class="grid">
+            <div class="field full">
+              <label>Which listings do you have access to?</label>
+              <div class="choices">
+                <label class="choice"><input type="checkbox" name="directoryAccess" value="Yelp" /> Yelp</label>
+                <label class="choice"><input type="checkbox" name="directoryAccess" value="BBB" /> BBB</label>
+                <label class="choice"><input type="checkbox" name="directoryAccess" value="Angi" /> Angi</label>
+                <label class="choice"><input type="checkbox" name="directoryAccess" value="Facebook Page" /> Facebook Page</label>
+                <label class="choice"><input type="checkbox" name="directoryAccess" value="Bing Places" /> Bing Places</label>
+                <label class="choice"><input type="checkbox" name="directoryAccess" value="Apple Maps Connect" /> Apple Maps</label>
+                <label class="choice"><input type="checkbox" name="directoryAccess" value="Other" /> Other</label>
+              </div>
+            </div>
+
+            <div class="field full" id="directoryOtherWrap" style="display:none;">
+              <label for="directoryOtherPlatforms">If other, list platforms</label>
+              <input id="directoryOtherPlatforms" name="directoryOtherPlatforms" type="text" placeholder="Nextdoor, Houzz, etc." />
+            </div>
+
+            <div class="field full">
+              <label for="directoryAccessDetails">If you want: login details OR admin invite email</label>
+              <textarea id="directoryAccessDetails" name="directoryAccessDetails" placeholder="Invite admin to: admin@domain.com&#10;or&#10;Yelp login: email / password"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBMISSION -->
+        <div class="section">
+          <h2>Submit</h2>
+          <p>Submit the form when ready. We’ll follow up with anything missing.</p>
+
+          <div class="alert success" id="alertOk"><strong>Submitted.</strong> We received your form and will follow up with next steps.</div>
+          <div class="alert warn" id="alertWarn"><strong>Draft saved.</strong> You can close this page and come back later.</div>
+          <div class="alert error" id="alertErr"><strong>Submission failed.</strong> <span id="alertErrMsg">Please try again.</span></div>
+
+          <div class="footer">
+            <div style="font-size: 12.5px; color: rgba(91,100,118,.92); max-width: 86ch;">
+              Your draft is saved locally in your browser until you submit.
+            </div>
+            <div style="display:flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;">
+              <button class="btn" type="button" id="btnSave">Save draft</button>
+              <button class="btn primary" type="submit">Submit</button>
+            </div>
+          </div>
+
+          <div class="small-note">
+            For website updates or changes, email us directly so we can track them properly.
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /**************************************************************************
+     * CONFIG
+     * - mailto: backend-free (opens email client)
+     * - webhook: recommended for production (Google Apps Script → Sheets)
+     **************************************************************************/
+    const SUBMIT_MODE = "mailto"; // "mailto" | "webhook" | "disabled"
+    const WEBHOOK_URL = "";       // set if SUBMIT_MODE="webhook"
+    const SUBMIT_EMAIL = "inquiries@tharrosai.com"; // change to your intake email
+
+    /**************************************************************************
+     * ELEMENTS
+     **************************************************************************/
+    const STORAGE_KEY = "launch_form_golive_v2";
+    const form = document.getElementById("launchForm");
+    const savedAt = document.getElementById("savedAt");
+
+    const btnSave = document.getElementById("btnSave");
+    const btnReset = document.getElementById("btnReset");
+    const btnExport = document.getElementById("btnExport");
+
+    const alertOk = document.getElementById("alertOk");
+    const alertWarn = document.getElementById("alertWarn");
+    const alertErr = document.getElementById("alertErr");
+    const alertErrMsg = document.getElementById("alertErrMsg");
+
+    let lastSaved = null;
+
+    function hideAlerts(){
+      alertOk.style.display = "none";
+      alertWarn.style.display = "none";
+      alertErr.style.display = "none";
+    }
+
+    function showAlert(kind, msg){
+      hideAlerts();
+      if(kind === "ok") alertOk.style.display = "block";
+      if(kind === "warn") alertWarn.style.display = "block";
+      if(kind === "error"){
+        alertErr.style.display = "block";
+        if(msg) alertErrMsg.textContent = msg;
+      }
+    }
+
+    function formatSavedAt(iso){
+      if(!iso) return "Saved";
+      const d = new Date(iso);
+      return "Saved " + d.toLocaleString();
+    }
+
+    function formToJSON(){
+      const fd = new FormData(form);
+      const obj = {};
+      for(const [k, v] of fd.entries()){
+        if(obj[k] !== undefined){
+          if(Array.isArray(obj[k])) obj[k].push(v);
+          else obj[k] = [obj[k], v];
+        } else {
+          obj[k] = v;
+        }
+      }
+      return obj;
+    }
+
+    function saveDraft({silent=false} = {}){
+      const data = formToJSON();
+      const payload = { savedAt: new Date().toISOString(), data };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      lastSaved = payload.savedAt;
+      savedAt.textContent = "Saved";
+      setTimeout(() => savedAt.textContent = formatSavedAt(lastSaved), 450);
+      if(!silent) showAlert("warn");
+    }
+
+    function loadDraft(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const payload = JSON.parse(raw);
+        if(!payload?.data) return;
+
+        lastSaved = payload.savedAt || null;
+        const data = payload.data;
+
+        for(const [k,v] of Object.entries(data)){
+          const nodes = document.getElementsByName(k);
+          if(!nodes || nodes.length === 0) continue;
+          const node = nodes[0];
+
+          if(node.type === "radio"){
+            for(const r of nodes) r.checked = (r.value === v);
+          } else if(node.type === "checkbox"){
+            if(Array.isArray(v)){
+              for(const c of nodes) c.checked = v.includes(c.value);
+            } else {
+              for(const c of nodes) c.checked = (c.value === v);
+            }
+          } else {
+            node.value = Array.isArray(v) ? v.join(", ") : v;
+          }
+        }
+
+        savedAt.textContent = formatSavedAt(lastSaved);
+      } catch(e){}
+    }
+
+    function resetAll(){
+      if(!confirm("Reset the form and clear saved draft?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      form.reset();
+      lastSaved = null;
+      savedAt.textContent = "Saved";
+      applyConditionalVisibility();
+      hideAlerts();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function exportJSON(){
+      const data = formToJSON();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "launch-form-submission.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function applyConditionalVisibility(){
+      const sms = document.querySelector('input[name="smsNotifications"]:checked')?.value;
+      document.getElementById("smsPhoneWrap").style.display = (sms === "Yes") ? "block" : "none";
+      if(sms !== "Yes") document.getElementById("smsPhoneNumber").value = "";
+
+      const ins = document.querySelector('input[name="insuranceStatement"]:checked')?.value;
+      document.getElementById("customInsuranceWrap").style.display = (ins === "Custom wording") ? "block" : "none";
+      if(ins !== "Custom wording") document.getElementById("customInsuranceWording").value = "";
+
+      const oldNap = document.querySelector('input[name="hasOldNap"]:checked')?.value;
+      document.getElementById("oldNapDetailsWrap").style.display = (oldNap === "Yes") ? "block" : "none";
+      if(oldNap !== "Yes") document.getElementById("oldNapDetails").value = "";
+
+      const gbp = document.querySelector('input[name="gbpAccessMethod"]:checked')?.value;
+      const admin = (gbp === "Add me as an admin");
+      const login = (gbp === "I will share login/password temporarily");
+      document.getElementById("gbpAdminEmailWrap").style.display = admin ? "block" : "none";
+      document.getElementById("gbpLoginEmailWrap").style.display = login ? "block" : "none";
+      document.getElementById("gbpLoginPasswordWrap").style.display = login ? "block" : "none";
+      if(!admin) document.getElementById("gbpInviteEmail").value = "";
+      if(!login){
+        document.getElementById("gbpLoginEmail").value = "";
+        document.getElementById("gbpLoginPassword").value = "";
+      }
+
+      const otherChecked = Array.from(document.querySelectorAll('input[name="directoryAccess"][value="Other"]')).some(x => x.checked);
+      document.getElementById("directoryOtherWrap").style.display = otherChecked ? "block" : "none";
+      if(!otherChecked) document.getElementById("directoryOtherPlatforms").value = "";
+    }
+
+    async function submitForm(){
+      hideAlerts();
+
+      const payload = formToJSON();
+      payload._meta = {
+        submittedAt: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        page: location.href
+      };
+
+      // Always save first
+      saveDraft({silent:true});
+
+      if(SUBMIT_MODE === "disabled"){
+        showAlert("ok");
+        return;
+      }
+
+      if(SUBMIT_MODE === "webhook"){
+        if(!WEBHOOK_URL){
+          showAlert("error", "Missing WEBHOOK_URL. Set it in the script to enable submissions.");
+          return;
+        }
+        try{
+          const res = await fetch(WEBHOOK_URL, {
+            method: "POST",
+            mode: "cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const json = await res.json().catch(() => ({}));
+          if(!res.ok || json.ok === false){
+            throw new Error(json.error || "Submission failed.");
+          }
+          localStorage.removeItem(STORAGE_KEY);
+          savedAt.textContent = "Submitted";
+          showAlert("ok");
+          form.reset();
+          applyConditionalVisibility();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }catch(err){
+          showAlert("error", err?.message || "Submission failed.");
+          return;
+        }
+      }
+
+      // mailto mode (backend-free)
+      const subject = encodeURIComponent("Launch Form Submission");
+      const body = encodeURIComponent(JSON.stringify(payload, null, 2));
+      window.location.href = `mailto:${SUBMIT_EMAIL}?subject=${subject}&body=${body}`;
+      showAlert("ok");
+    }
+
+    // Init
+    function init(){
+      loadDraft();
+      applyConditionalVisibility();
+      savedAt.textContent = lastSaved ? formatSavedAt(lastSaved) : "Saved";
+      hideAlerts();
+
+      let timer = null;
+      document.addEventListener("input", (e) => {
+        const t = e.target;
+        if(!t || !t.matches("input, textarea, select")) return;
+        if(timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          applyConditionalVisibility();
+          saveDraft({silent:true});
+        }, 450);
+      });
+
+      document.addEventListener("change", (e) => {
+        const t = e.target;
+        if(!t) return;
+        const watched = ["smsNotifications","insuranceStatement","hasOldNap","gbpAccessMethod","directoryAccess"];
+        if(watched.includes(t.name)){
+          applyConditionalVisibility();
+          saveDraft({silent:true});
+        }
+      });
+
+      btnSave.addEventListener("click", () => saveDraft({silent:false}));
+      btnReset.addEventListener("click", resetAll);
+      btnExport.addEventListener("click", exportJSON);
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        submitForm();
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
